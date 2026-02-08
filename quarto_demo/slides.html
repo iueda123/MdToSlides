@@ -443,7 +443,7 @@
 
   <meta name="author" content="ラボ共有資料">
   <meta name="dcterms.date" content="2026-02-08">
-  <title>Quarto × reveal.js 統合デモ</title>
+  <title>Quarto × reveal.js による スライド作成</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -1053,7 +1053,7 @@ margin-right: 0; }
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Quarto × reveal.js 統合デモ</h1>
+  <h1 class="title">Quarto × reveal.js による スライド作成</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -1070,9 +1070,12 @@ margin-right: 0; }
 <ul>
 <li><a href="#/このデモの目的" id="/toc-このデモの目的">このデモの目的</a></li>
 <li><a href="#/前提知識" id="/toc-前提知識">前提知識</a></li>
-<li><a href="#/具体的な使い方" id="/toc-具体的な使い方">具体的な使い方</a></li>
+<li><a href="#/基本事項アニメーションレイアウト以外" id="/toc-基本事項アニメーションレイアウト以外">基本事項（アニメーション、レイアウト以外）</a></li>
+<li><a href="#/アニメーション" id="/toc-アニメーション">アニメーション</a></li>
 <li><a href="#/レイアウト" id="/toc-レイアウト">レイアウト</a></li>
-<li><a href="#/pdf化" id="/toc-pdf化">PDF化</a></li>
+<li><a href="#/ファイルフォーマット変換" id="/toc-ファイルフォーマット変換">ファイルフォーマット変換</a></li>
+<li><a href="#/ci-での自動ビルド" id="/toc-ci-での自動ビルド">CI での自動ビルド</a></li>
+<li><a href="#/まとめ" id="/toc-まとめ">まとめ</a></li>
 </ul>
 </nav>
 </section>
@@ -1081,8 +1084,8 @@ margin-right: 0; }
 <h1>このデモの目的</h1>
 <ul>
 <li>Markdown 1ファイルから reveal.js スライドを生成する</li>
-<li>同じ原稿を PDF にも落とし込んで配布に備える</li>
-<li>再現できるコマンドを残し、研究室の誰でも追従できるようにする</li>
+<li>このデモ自体に基本事項を収めつつ誰でも再現できるようにする</li>
+<li>スライドをPDFやPPTXにも落とし込んで配布や加工に備える</li>
 </ul>
 <aside class="notes">
 <p>ブラウザ登壇を主にしつつ、査読や資料配布でPDFが求められたときの逃げ道を確保しておきたい、という前提を共有。</p>
@@ -1111,7 +1114,7 @@ display:block!important;
 <ul>
 <li><strong>Quarto</strong> = Markdown を多形式に変換する統合ビルドツール（Pandoc・Jupyter を内包）</li>
 <li><strong>reveal.js</strong> = ブラウザ上でスライドを描画するプレゼンエンジン</li>
-<li><code>.qmd</code> 1つで HTML スライドと PDF を両立させる</li>
+<li><code>.qmd</code> 1つで HTML スライドと PDF, PTTX 生成を両立させる</li>
 </ul>
 <aside class="notes">
 <p>Quarto が「Markdown → reveal.js 構造化 HTML」への変換とオプション注入を行い、reveal.js が実際のアニメーション・ナビゲーションを提供する。</p>
@@ -1152,8 +1155,8 @@ display:block!important;
 
 </section></section>
 <section>
-<section id="具体的な使い方" class="title-slide slide level1 center">
-<h1>具体的な使い方</h1>
+<section id="基本事項アニメーションレイアウト以外" class="title-slide slide level1 center">
+<h1>基本事項（アニメーション、レイアウト以外）</h1>
 
 </section>
 <section id="ワークフロー" class="slide level2">
@@ -1177,7 +1180,7 @@ width: 1px!important;
 overflow: hidden!important;
 display:block!important;
 }</style></aside>
-<p>makeコマンドの関係は？</p>
+<p>makeコマンドとの関係は？</p>
 </section>
 <section id="tocの自動生成" class="slide level2">
 <h2>TOCの自動生成</h2>
@@ -1199,51 +1202,20 @@ display:block!important;
 <span id="cb2-5"><a href></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span>
 <span id="cb2-6"><a href></a><span class="kw">:</span><span class="at">        </span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="アニメーションの制御" class="slide level2">
-<h2>アニメーションの制御</h2>
-<ul>
-<li>スライドの切り替え
-<ul>
-<li><code>transition: slide</code>: 滑るように</li>
-<li><code>transition: fade</code>: 消えるように</li>
-</ul></li>
-<li>行の表示
-<ul>
-<li><code>incremental: true</code> 段階的表示</li>
-<li><code>incremental: false</code> 一括表示</li>
-</ul></li>
-</ul>
-</section>
-<section id="セクションとサブスライド" class="slide level2">
-<h2>セクションとサブスライド</h2>
-<ul>
-<li><code>##</code> 見出しごとに1枚のスライド（水平方向、左右キーで移動）</li>
-<li>同じ <code>##</code> の直後に <code>###</code> を書くと垂直サブスライドになる（上下キーで移動）</li>
-</ul>
-<h3 id="サブスライド-a">サブスライド A</h3>
-<p>セクション内の1ページ目。</p>
-<h3 id="サブスライド-b">サブスライド B</h3>
-<p>下矢印で2ページ目へ進む。</p>
-</section>
-<section id="段階表示-incremental" class="slide level2">
-<h2>段階表示 (incremental)</h2>
-<ul>
-<li>YAML で <code>format.revealjs.incremental: true</code> と書くとリスト要素が段階表示になる</li>
-<li>ここでは 1 クリックごとに行が表示される</li>
-<li><code>:::{.incremental}</code> を本文側に書いて局所的にオンにすることも可能</li>
-<li>ここでは 1 クリックごとに行が表示される</li>
-<li>ここでは 1 クリックごとに行が表示される</li>
-<li>ここでは 1 クリックごとに行が表示される</li>
-<li>ここでは 1 クリックごとに行が表示される</li>
-</ul>
-</section>
-<section id="embed-resources-true-の効果" class="slide level2">
-<h2>embed-resources: true の効果</h2>
+<section id="embed-resources-true-でメディア埋め込み" class="slide level2">
+<h2>embed-resources: true でメディア埋め込み</h2>
 <ul>
 <li>CSS / JS / 画像を 1 つの HTML にバンドル（Base64 化してインライン展開）</li>
 <li>ネットワークに接続できない会場やファイル単体配布に便利</li>
 <li>ファイルサイズは大きくなるので、動画は外部ファイルのままが無難</li>
 </ul>
+<pre><code>:
+format:
+  revealjs:
+    theme: [default, simple]
+    slide-number: true
+    embed-resources: true
+:</code></pre>
 </section>
 <section id="スピーカーノートの使い方" class="slide level2">
 <h2>スピーカーノートの使い方</h2>
@@ -1269,30 +1241,87 @@ display:block!important;
 <section id="コードブロックの表示" class="slide level2">
 <h2>コードブロックの表示</h2>
 <p><strong>bash</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href></a><span class="co"># HTML スライド生成</span></span>
-<span id="cb3-2"><a href></a><span class="ex">quarto</span> render slides.qmd <span class="at">--to</span> revealjs</span>
-<span id="cb3-3"><a href></a></span>
-<span id="cb3-4"><a href></a><span class="co"># Chrome ヘッドレスで PDF 化</span></span>
-<span id="cb3-5"><a href></a><span class="ex">google-chrome</span> <span class="at">--headless</span> <span class="at">--disable-gpu</span> <span class="at">--no-sandbox</span> <span class="dt">\</span></span>
-<span id="cb3-6"><a href></a>    <span class="at">--disable-dev-shm-usage</span> <span class="at">--print-to-pdf</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/slides.pdf&quot;</span> <span class="dt">\</span></span>
-<span id="cb3-7"><a href></a>    <span class="st">&quot;file://</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/slides.html?print-pdf&quot;</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href></a><span class="co"># HTML スライド生成</span></span>
+<span id="cb4-2"><a href></a><span class="ex">quarto</span> render slides.qmd <span class="at">--to</span> revealjs</span>
+<span id="cb4-3"><a href></a></span>
+<span id="cb4-4"><a href></a><span class="co"># Chrome ヘッドレスで PDF 化</span></span>
+<span id="cb4-5"><a href></a><span class="ex">google-chrome</span> <span class="at">--headless</span> <span class="at">--disable-gpu</span> <span class="at">--no-sandbox</span> <span class="dt">\</span></span>
+<span id="cb4-6"><a href></a>    <span class="at">--disable-dev-shm-usage</span> <span class="at">--print-to-pdf</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/slides.pdf&quot;</span> <span class="dt">\</span></span>
+<span id="cb4-7"><a href></a>    <span class="st">&quot;file://</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/slides.html?print-pdf&quot;</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>python</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href></a><span class="co"># デモ用: プレースホルダデータを生成</span></span>
-<span id="cb4-2"><a href></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb4-3"><a href></a>np.random.seed(<span class="dv">42</span>)</span>
-<span id="cb4-4"><a href></a>noise <span class="op">=</span> np.random.normal(size<span class="op">=</span><span class="dv">100</span>)</span>
-<span id="cb4-5"><a href></a>trend <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
-<span id="cb4-6"><a href></a>data <span class="op">=</span> trend <span class="op">+</span> <span class="fl">0.2</span> <span class="op">*</span> noise</span>
-<span id="cb4-7"><a href></a><span class="bu">print</span>(data[:<span class="dv">5</span>])</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href></a><span class="co"># デモ用: プレースホルダデータを生成</span></span>
+<span id="cb5-2"><a href></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-3"><a href></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb5-4"><a href></a>noise <span class="op">=</span> np.random.normal(size<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb5-5"><a href></a>trend <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb5-6"><a href></a>data <span class="op">=</span> trend <span class="op">+</span> <span class="fl">0.2</span> <span class="op">*</span> noise</span>
+<span id="cb5-7"><a href></a><span class="bu">print</span>(data[:<span class="dv">5</span>])</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="動的スライドというのもある" class="slide level2">
-<h2>動的スライドというのもある</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb5-2"><a href></a>np.random.seed(<span class="dv">0</span>)</span>
-<span id="cb5-3"><a href></a><span class="bu">print</span>(np.random.rand(<span class="dv">3</span>))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="実行ブロック" class="slide level2">
+<h2>実行ブロック</h2>
+<div id="a3d17968" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-stdout">
+<pre><code>これはbashスクリプトの実行結果です
+---- Files in Current Dir ----
+Makefile
+img
+instruction.md
+screen.png
+screen2.png</code></pre>
+</div>
+</div>
 <ul>
-<li>Quarto のコードブロックは Knitr / Jupyter 実行にも対応</li>
-<li>今回は実行しない静的スライド</li>
+<li>上記は 実行ブロックの例</li>
+<li>コードブロック冒頭のスクリプトエンジン名を <code>{〜}</code> で囲むとコマンド出力結果を埋込</li>
+<li>Quarto のコードブロックは bash, python, Knitr / Jupyter 等実行にも対応</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="アニメーション" class="title-slide slide level1 center">
+<h1>アニメーション</h1>
+
+</section>
+<section id="アニメーションの制御" class="slide level2">
+<h2>アニメーションの制御</h2>
+<ul>
+<li>スライドの切り替え
+<ul>
+<li><code>transition: slide</code>: 滑るように</li>
+<li><code>transition: fade</code>: 消えるように</li>
+</ul></li>
+<li>行の表示
+<ul>
+<li><code>incremental: true</code> 段階的表示</li>
+<li><code>incremental: false</code> 一括表示</li>
+</ul></li>
+</ul>
+</section>
+<section id="段階表示-incremental" class="slide level2">
+<h2>段階表示 (incremental)</h2>
+<ul>
+<li>YAML で <code>format.revealjs.incremental: true</code> と書くとリスト要素が段階表示になる</li>
+<li><code>:::{.incremental}</code> を本文側に書いて局所的にオンにすることも可能</li>
+<li>ここでは 1 クリックごとに行が表示される</li>
+<li>ここでは 1 クリックごとに行が表示される</li>
+</ul>
+</section>
+<section id="セクションとサブスライド" class="slide level2">
+<h2>セクションとサブスライド</h2>
+<ul>
+<li><code>##</code> 見出しごとに1枚のスライド（水平方向、左右キーで移動）</li>
+<li>同じ <code>##</code> の直後に <code>###</code> を書くと垂直サブスライドになる（上下キーで移動）</li>
+</ul>
+<h3 id="サブスライド-a">サブスライド A</h3>
+<ul>
+<li>セクション内の1ページ目。</li>
+</ul>
+<h3 id="サブスライド-b">サブスライド B</h3>
+<ul>
+<li>2ページ目。</li>
+<li>サブスライドは部分的一括表示に便利？</li>
 </ul>
 </section>
 <section id="ブランクページ" class="slide level2">
@@ -1380,29 +1409,16 @@ display:block!important;
 </div>
 </div>
 </section>
-<section id="layout-true-による共有背景" class="slide level2" data-layout="true">
-<h2>layout: true による共有背景</h2>
-<p><code>{layout=&quot;true&quot;}</code> を見出しに付けると、後続サブスライドへ背景・共通要素を継承する。</p>
-<h3 id="レイアウト継承スライド-1">レイアウト継承スライド 1</h3>
-<ul>
-<li>研究ロゴや枠線を複数枚に跨がせたい場合に使う</li>
-<li>同じ背景色や配置を再利用できる</li>
-</ul>
-<h3 id="レイアウト継承スライド-2">レイアウト継承スライド 2</h3>
-<ul>
-<li>研究の流れ図などを共通背景として差し込むケースに便利</li>
-</ul>
-</section>
 <section class="slide level2">
 
 </section></section>
 <section>
-<section id="pdf化" class="title-slide slide level1 center">
-<h1>PDF化</h1>
+<section id="ファイルフォーマット変換" class="title-slide slide level1 center">
+<h1>ファイルフォーマット変換</h1>
 
 </section>
-<section id="pdf-化の選択肢" class="slide level2">
-<h2>PDF 化の選択肢</h2>
+<section id="pdf-化手段には複数ある" class="slide level2">
+<h2>PDF 化手段には複数ある</h2>
 <ul>
 <li><strong>Chrome 印刷</strong>: <code>?print-pdf</code> モードで登壇画面と同じ状態をそのまま PDF 化
 <ul>
@@ -1424,16 +1440,38 @@ overflow: hidden!important;
 display:block!important;
 }</style></aside>
 </section>
-<section id="まとめ" class="slide level2">
-<h2>まとめ</h2>
+<section id="pptx化" class="slide level2">
+<h2>PPTX化</h2>
 <ul>
-<li>Markdown で台本を集中管理し、出力形式は Quarto に任せる</li>
-<li>reveal.js を登壇用、Chrome PDF を配布用という役割分担で破綻を防ぐ</li>
-<li>必要に応じて <code>format.pdf</code>（Beamer）や <code>--to pptx</code>（PowerPoint）を併産</li>
-<li><code>quarto render</code> を CI に組み込めば配布忘れ・崩れを早期検知できる</li>
+<li><code>quarto render slides.qmd --to pptx</code> で PowerPoint 形式に変換</li>
+<li>レイアウトはスライド母版よりも「1枚ごとの要素配置」に近い</li>
+<li>reveal.js 固有のアニメーションは PPTX には引き継がれない</li>
+<li>ノートは <code>::: notes</code> の内容が PowerPoint のノート欄に入る</li>
 </ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href></a><span class="ex">quarto</span> render slides.qmd <span class="at">--to</span> pptx</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</section></section>
+<section>
+<section id="ci-での自動ビルド" class="title-slide slide level1 center">
+<h1>CI での自動ビルド</h1>
+<ul>
+<li><code>quarto render</code> で HTML/PDF/PPTX をまとめて生成</li>
+<li><code>quarto check</code> を先に走らせると環境差分に気づきやすい</li>
+<li>成果物（slides.html / slides.pdf / slides.pptx）をアーティファクト化</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href></a><span class="fu">name</span><span class="kw">:</span><span class="at"> build-slides</span></span>
+<span id="cb8-2"><a href></a><span class="fu">on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">push</span><span class="kw">]</span></span>
+<span id="cb8-3"><a href></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb8-4"><a href></a><span class="at">  </span><span class="fu">render</span><span class="kw">:</span></span>
+<span id="cb8-5"><a href></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb8-6"><a href></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb8-7"><a href></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v4</span></span>
+<span id="cb8-8"><a href></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> quarto-dev/quarto-actions/setup@v2</span></span>
+<span id="cb8-9"><a href></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> quarto check</span></span>
+<span id="cb8-10"><a href></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> quarto render slides.qmd --to revealjs</span></span>
+<span id="cb8-11"><a href></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> quarto render slides.qmd --to pdf</span></span>
+<span id="cb8-12"><a href></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> quarto render slides.qmd --to pptx</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <aside class="notes">
-<p>CI 例: GitHub Actions で <code>quarto render</code> → <code>google-chrome --headless --print-to-pdf</code> を走らせ、slides.html と slides.pdf をアーティファクト化。</p>
+<p>CI = Continuous Integration（継続的インテグレーション）。GitHub Actions のような自動実行基盤でビルドを回し、配布物を安定生成する、という意図を補足する。 CI 例: GitHub Actions で <code>quarto render</code> → <code>google-chrome --headless --print-to-pdf</code> を走らせ、slides.html と slides.pdf をアーティファクト化。</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1445,8 +1483,19 @@ width: 1px!important;
 overflow: hidden!important;
 display:block!important;
 }</style></aside>
+</section>
+<section class="slide level2">
 
 </section></section>
+<section id="まとめ" class="title-slide slide level1 center">
+<h1>まとめ</h1>
+<ul>
+<li>Markdown 1ファイルから reveal.js スライドを生成できる</li>
+<li>このデモに基本事項とレイアウト例をまとめ、再現しやすくしている</li>
+<li>PDF/PPTX へも同じ原稿から展開できる</li>
+</ul>
+
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

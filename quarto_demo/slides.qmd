@@ -1,5 +1,5 @@
 ---
-title: "Quarto × reveal.js 統合デモ"
+title: "Quarto × reveal.js による スライド作成"
 author: "ラボ共有資料"
 date: last-modified
 lang: ja
@@ -24,8 +24,8 @@ format:
 # このデモの目的
 
 - Markdown 1ファイルから reveal.js スライドを生成する
-- 同じ原稿を PDF にも落とし込んで配布に備える
-- 再現できるコマンドを残し、研究室の誰でも追従できるようにする
+- このデモ自体に基本事項を収めつつ誰でも再現できるようにする
+- スライドをPDFやPPTXにも落とし込んで配布や加工に備える
 
 ::: notes
 ブラウザ登壇を主にしつつ、査読や資料配布でPDFが求められたときの逃げ道を確保しておきたい、という前提を共有。
@@ -39,7 +39,7 @@ format:
 
 - **Quarto** = Markdown を多形式に変換する統合ビルドツール（Pandoc・Jupyter を内包）
 - **reveal.js** = ブラウザ上でスライドを描画するプレゼンエンジン
-- `.qmd` 1つで HTML スライドと PDF を両立させる
+- `.qmd` 1つで HTML スライドと PDF, PTTX 生成を両立させる
 
 ::: notes
 Quarto が「Markdown → reveal.js 構造化 HTML」への変換とオプション注入を行い、reveal.js が実際のアニメーション・ナビゲーションを提供する。
@@ -68,7 +68,7 @@ demo/
 
 --------------
 
-# 具体的な使い方
+# 基本事項（アニメーション、レイアウト以外）
 
 ## ワークフロー
 
@@ -81,7 +81,7 @@ demo/
 `quarto render --to revealjs` は .qmd の YAML を読み取り、Pandoc 経由で reveal.js 互換 HTML を生成するコマンド。`--to pdf` `--to pptx` など同じ原稿から別形式も作成できる。
 :::
 
-makeコマンドの関係は？
+makeコマンドとの関係は？
 
 ## TOCの自動生成
 
@@ -100,53 +100,21 @@ format:
 :        
 ```
 
-## アニメーションの制御
-
-  * スライドの切り替え
-    * `transition: slide`: 滑るように
-    * `transition: fade`: 消えるように
-  * 行の表示
-    * `incremental: true` 段階的表示
-    * `incremental: false` 一括表示
-
-----
-
-
-
-## セクションとサブスライド
-
-- `##` 見出しごとに1枚のスライド（水平方向、左右キーで移動）
-- 同じ `##` の直後に `###` を書くと垂直サブスライドになる（上下キーで移動）
-
-### サブスライド A
-
-セクション内の1ページ目。
-
-### サブスライド B
-
-下矢印で2ページ目へ進む。
-
-----
-
-
-## 段階表示 (incremental)
-
-- YAML で `format.revealjs.incremental: true` と書くとリスト要素が段階表示になる
-- ここでは 1 クリックごとに行が表示される
-- `:::{.incremental}` を本文側に書いて局所的にオンにすることも可能
-- ここでは 1 クリックごとに行が表示される
-- ここでは 1 クリックごとに行が表示される
-- ここでは 1 クリックごとに行が表示される
-- ここでは 1 クリックごとに行が表示される
-
-
-
-## embed-resources: true の効果
+## embed-resources: true でメディア埋め込み
 
 - CSS / JS / 画像を 1 つの HTML にバンドル（Base64 化してインライン展開）
 - ネットワークに接続できない会場やファイル単体配布に便利
 - ファイルサイズは大きくなるので、動画は外部ファイルのままが無難
 
+```
+:
+format:
+  revealjs:
+    theme: [default, simple]
+    slide-number: true
+    embed-resources: true
+:
+```
 
 
 ## スピーカーノートの使い方
@@ -184,15 +152,56 @@ data = trend + 0.2 * noise
 print(data[:5])
 ```
 
-## 動的スライドというのもある
+## 実行ブロック
 
-```python
-import numpy as np
-np.random.seed(0)
-print(np.random.rand(3))
+```{bash}
+echo "これはbashスクリプトの実行結果です"
+echo "---- Files in Current Dir ----"
+ls -1 | head -n 5
 ```
-- Quarto のコードブロックは Knitr / Jupyter 実行にも対応
-- 今回は実行しない静的スライド
+
+- 上記は 実行ブロックの例
+- コードブロック冒頭のスクリプトエンジン名を `{〜}` で囲むとコマンド出力結果を埋込
+- Quarto のコードブロックは bash, python, Knitr / Jupyter 等実行にも対応
+
+------------------------
+
+# アニメーション
+
+
+## アニメーションの制御
+
+  * スライドの切り替え
+    * `transition: slide`: 滑るように
+    * `transition: fade`: 消えるように
+  * 行の表示
+    * `incremental: true` 段階的表示
+    * `incremental: false` 一括表示
+
+
+
+## 段階表示 (incremental)
+
+- YAML で `format.revealjs.incremental: true` と書くとリスト要素が段階表示になる
+- `:::{.incremental}` を本文側に書いて局所的にオンにすることも可能
+- ここでは 1 クリックごとに行が表示される
+- ここでは 1 クリックごとに行が表示される
+
+
+## セクションとサブスライド
+
+- `##` 見出しごとに1枚のスライド（水平方向、左右キーで移動）
+- 同じ `##` の直後に `###` を書くと垂直サブスライドになる（上下キーで移動）
+
+### サブスライド A
+
+* セクション内の1ページ目。
+
+### サブスライド B
+
+* 2ページ目。
+* サブスライドは部分的一括表示に便利？
+
 
 
 ## ブランクページ
@@ -259,24 +268,12 @@ print(np.random.rand(3))
 :::
 
 
-## layout: true による共有背景 {layout="true"}
-
-`{layout="true"}` を見出しに付けると、後続サブスライドへ背景・共通要素を継承する。
-
-### レイアウト継承スライド 1
-
-- 研究ロゴや枠線を複数枚に跨がせたい場合に使う
-- 同じ背景色や配置を再利用できる
-
-### レイアウト継承スライド 2
-
-- 研究の流れ図などを共通背景として差し込むケースに便利
 
 ----------------------
 
-# PDF化
+# ファイルフォーマット変換
 
-## PDF 化の選択肢
+## PDF 化手段には複数ある
 
 - **Chrome 印刷**: `?print-pdf` モードで登壇画面と同じ状態をそのまま PDF 化
   - `--no-sandbox --disable-dev-shm-usage` は CI でも安定する定番フラグ
@@ -286,13 +283,50 @@ print(np.random.rand(3))
 reveal.js の `?print-pdf` は公式ルートなので基本は安定。段階表示の一括表示には `pdfSeparateFragments: true` を組み合わせる。
 :::
 
-## まとめ
 
-- Markdown で台本を集中管理し、出力形式は Quarto に任せる
-- reveal.js を登壇用、Chrome PDF を配布用という役割分担で破綻を防ぐ
-- 必要に応じて `format.pdf`（Beamer）や `--to pptx`（PowerPoint）を併産
-- `quarto render` を CI に組み込めば配布忘れ・崩れを早期検知できる
+## PPTX化
+
+- `quarto render slides.qmd --to pptx` で PowerPoint 形式に変換
+- レイアウトはスライド母版よりも「1枚ごとの要素配置」に近い
+- reveal.js 固有のアニメーションは PPTX には引き継がれない
+- ノートは `::: notes` の内容が PowerPoint のノート欄に入る
+
+```bash
+quarto render slides.qmd --to pptx
+```
+
+
+# CI での自動ビルド
+
+- `quarto render` で HTML/PDF/PPTX をまとめて生成
+- `quarto check` を先に走らせると環境差分に気づきやすい
+- 成果物（slides.html / slides.pdf / slides.pptx）をアーティファクト化
+
+```yaml
+name: build-slides
+on: [push]
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - run: quarto check
+      - run: quarto render slides.qmd --to revealjs
+      - run: quarto render slides.qmd --to pdf
+      - run: quarto render slides.qmd --to pptx
+```
 
 ::: notes
+CI = Continuous Integration（継続的インテグレーション）。GitHub Actions のような自動実行基盤でビルドを回し、配布物を安定生成する、という意図を補足する。
 CI 例: GitHub Actions で `quarto render` → `google-chrome --headless --print-to-pdf` を走らせ、slides.html と slides.pdf をアーティファクト化。
 :::
+
+--------------------------
+
+# まとめ
+
+- Markdown 1ファイルから reveal.js スライドを生成できる
+- このデモに基本事項とレイアウト例をまとめ、再現しやすくしている
+- PDF/PPTX へも同じ原稿から展開できる
+
