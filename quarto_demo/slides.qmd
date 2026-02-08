@@ -195,6 +195,10 @@ print(np.random.rand(3))
 - 今回は実行しない静的スライド
 
 
+## ブランクページ
+
+  * `----` はブランクページ
+
 ---------------------
 
 # レイアウト
@@ -211,49 +215,46 @@ print(np.random.rand(3))
 :::
 
 ::: {.column width="30%"}
-![](img/figure-half.svg){width=100%}
+![キャプション](img/figure-half.svg){width=100%}
 :::
 :::
 
-## カラムレイアウト２
-
-図を右側に配置したい場合などに有効
-
-::: {.columns}
-::: {.column width="70%"}
-- 2カラム構成にして右側を画像に割り当て
-- 左カラムに箇条書きや説明を置くと読みやすい
-- `width` 属性でカラム比を微調整可能
-:::
-
-::: {.column width="30%"}
-![](img/figure-half.svg){width=100%}
-:::
-:::
 
 ## 図を上部に配置
 
-::: {.layout-split style="display:grid; grid-template-rows:30% 70%; height:70vh;"}
-![Sample Figre](img/figure-top.svg){width=90%; style="justify-self:center; align-self:end;"}
+::: {.layout-split style="display:grid; grid-template-rows:40% 60%; height:80vh;"}
 
-::: {.split-caption style="padding:0 1rem 1rem;"}
-- CSS グリッドで上下2段を作り、上段に図、下段に説明文
-- `grid-template-rows:30% 70%` は上下2段の高さ配分（上段30%、下段70%）を指定
-- `height:70vh` は表示領域の高さの 70% をコンテナ全体の高さにする指定
-- 例: `grid-template-rows:30% 70%` かつ `height:70vh` の場合、上段は画面高の 21%（0.3 × 70vh）、下段は画面高の 49%（0.7 × 70vh）
+::: {.row-top style="display:flex; justify-content:center; align-items:flex-end;"}
+![これはキャプションです。](img/figure-top.svg){width=80%}
+:::
+
+::: {.row-bottom style="padding:0 1rem 1rem;"}
+- 上段と下段を明示的な入れ子ブロックで分ける
+- `grid-template-rows:40% 60%` 上下2段の高さの配分
+- `height:70vh` コンテナ全体高を表示領域高の７割に
+  -  例: `grid-template-rows:30% 70%` かつ `height:70vh` の場合、上段は画面高の 21%（0.3 × 70vh）、下段は画面高の 49%（0.7 × 70vh）
+- 配置は各ブロック内で `flex` などを使って調整する
 {: style="margin:0;"}
 :::
+
 :::
 
-## 図を右下に表示
+
+## 図を左下と右下に表示
 
 ::: {.layout-split style="display:grid; grid-template-rows:70% 30%; height:70vh;"}
-- 上段に文章、下段に図を配置して視線の流れを整理
-- 下段の図は右寄せにし、中央の間延びを防ぐ
-- `justify-self:end` と `align-self:end` で右下に揃える
+- 上段に本文、下段に左右2つの図を並べる
+- 下段は 2 カラムで左右に配置し、両端へ寄せる
+- 小さな比較図や補足図を同時に置きたいときに便利
 
-::: {.floating-figure style="justify-self:end; align-self:end; width:30%;"}
-![](img/figure-quarter.svg){width=100%}
+::: {.bottom-pair style="display:grid; grid-template-columns:1fr 1fr; align-items:end; gap:2rem;"}
+::: {.left-figure style="justify-self:start; width:100%;"}
+![図１](img/figure-quarter.svg){width=90%}
+:::
+
+::: {.right-figure style="justify-self:end; width:100%;"}
+![図２](img/figure-quarter.svg){width=90%}
+:::
 :::
 :::
 
