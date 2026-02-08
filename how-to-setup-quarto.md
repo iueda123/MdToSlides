@@ -1,3 +1,5 @@
+[< README](README.md)
+
 # Quarto CLI セットアップ手順 (Ubuntu)
 
 ## 1. インストール（.deb パッケージ）
